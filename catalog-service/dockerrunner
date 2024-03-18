@@ -1,0 +1,8 @@
+docker run -d \
+ --name catalog-service \
+ --network ecommerce-network \
+ -e "spring.config.import=optional:configserver:http://config-service:8888/" \
+ -e "spring.rabbitmq.host=rabbitmq" \
+ -e "eureka.client.service-url.defaultZone=http://discovery-service:8761/eureka" \
+ -e "logging.file=/api-logs/catalogs-ws.log" \
+ kyankee6/catalog-service:1.0

@@ -1,0 +1,1 @@
+docker run -d -p 3306:3306  --network ecommerce-network --name mariadb kyankee6/my-mariadb:1.0

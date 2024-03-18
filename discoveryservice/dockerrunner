@@ -1,0 +1,4 @@
+docker run -d -p 8761:8761 --network ecommerce-network \
+ -e "spring.config.import=optional:configserver:http://config-service:8888" \
+ -e "spring.cloud.config.name=ecommerce" \
+ --name discovery-service kyankee6/discovery-service:1.0

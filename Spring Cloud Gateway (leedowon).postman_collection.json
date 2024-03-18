@@ -1,0 +1,552 @@
+{
+	"info": {
+		"_postman_id": "7f6c2e14-ab4b-4ced-9861-a166e187cb5c",
+		"name": "Spring Cloud Gateway (leedowon)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32731160"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "유저 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Verify userId is set as collection variable 'msa-user-id'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.userId).to.exist;",
+									"    pm.collectionVariables.set(\"msa-user-id\", jsonData.userId);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"didzl1231@gmail.com\",\n    \"name\": \"yang\",\n    \"pwd\": \"string123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/user-service/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{msa-bearer-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/user-service/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "\b유저 단건 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{msa-bearer-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/user-service/users/{{msa-user-id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"users",
+								"{{msa-user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "유저 로그인",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Get token from header and save as collection variable msa-bearer-token",
+									"if (pm.response.code === 200) {",
+									"    var token = pm.response.headers.get(\"token\");",
+									"    pm.collectionVariables.set(\"msa-bearer-token\", token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"didzl1231@gmail.com\",\n    \"password\": \"string123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/user-service/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health_check",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2OGIyZjYyYy01NTc5LTRhNzYtYjQ5NS1kMzU0YzJhZmIzNmYiLCJleHAiOjE3MDkxMDgzNzIsImlhdCI6MTcwOTAyMTk3Mn0.zbO27qYP3WzvaWuZdXmimOFePwnZhOp3Vu4f3S1DRmqZSkgoPBnHyBqCbndU5X9-AL54hEtRwfi1eu5D393UBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/user-service/health_check",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"health_check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "welcome",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2OGIyZjYyYy01NTc5LTRhNzYtYjQ5NS1kMzU0YzJhZmIzNmYiLCJleHAiOjE3MDkxMDgzNzIsImlhdCI6MTcwOTAyMTk3Mn0.zbO27qYP3WzvaWuZdXmimOFePwnZhOp3Vu4f3S1DRmqZSkgoPBnHyBqCbndU5X9-AL54hEtRwfi1eu5D393UBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/user-service/health_check",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"health_check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "주문 생성",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"CATALOG-001\",\n    \"qty\":10,\n    \"unitPrice\": 1500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/order-service/{{msa-user-id}}/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"order-service",
+								"{{msa-user-id}}",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "주문 조회",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/order-service/{{msa-user-id}}/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"order-service",
+								"{{msa-user-id}}",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "catalog",
+			"item": [
+				{
+					"name": "카탈로그 조회",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/catalog-service/catalogs",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"catalog-service",
+								"catalogs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "actuator",
+			"item": [
+				{
+					"name": "acutator",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJlM2U5ZDBiNS02ZGZkLTQ5ZTAtODQxMC1lZGFiYzRiZTNkNjQiLCJleHAiOjE3MDkwOTk1NDUsImlhdCI6MTcwOTAxMzE0NX0.QP6UQELHmU0V4kf67UySx0EhzAkYvIxKKCavt6bqsNGOYVhDoNVM4oZ5kZ4dP99p",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/user-service/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actuator-refresh",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/user-service/actuator/busrefresh",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user-service",
+								"actuator",
+								"busrefresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "kafka",
+			"item": [
+				{
+					"name": "소스 커넥터 등록",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"my-source-connect\",\n    \"config\": {\n        \"connector.class\": \"io.confluent.connect.jdbc.JdbcSourceConnector\",\n        \"connection.url\": \"jdbc:mysql://localhost:3306/mydb\",\n        \"connection.user\": \"root\",\n        \"connection.password\": \"test1357\",\n        \"mode\": \"incrementing\",\n        \"incrementing.column.name\": \"id\",\n        \"table.whitelist\":\"users\",\n        \"topic.prefix\":\"my_topic_\",\n        \"tasks.max\":\"1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/connectors",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "싱크 커넥터 등록",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"my-sink-connect\",\n    \"config\": {\n        \"connector.class\": \"io.confluent.connect.jdbc.JdbcSinkConnector\",\n        \"connection.url\": \"jdbc:mysql://localhost:3306/mydb\",\n        \"connection.user\": \"root\",\n        \"connection.password\": \"test1357\",\n        \"auto.create\": \"true\",\n        \"auto.evolve\": \"true\",\n        \"delete.enabled\":\"false\",\n        \"tasks.max\":\"1\",\n        \"topics\":\"my_topic_users\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/connectors",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "커넥터 단건 조회",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"my-source-connect\",\n    \"config\": {\n        \"connector.class\": \"io.confluent.connect.jdbc.JdbcSourceConnector\",\n        \"connection.url\": \"jdbc:mysql://localhost:3306/mydb\",\n        \"connection.user\": \"root\",\n        \"connection.password\": \"test1357\",\n        \"mode\": \"incrementing\",\n        \"incrementing.column.name\": \"id\",\n        \"table.whitelist\":\"users\",\n        \"topic.prefix\":\"my_topic_\",\n        \"tasks.max\":\"1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/connectors/my-source-connect/status",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors",
+								"my-source-connect",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "커넥터 조회",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"my-source-connect\",\n    \"config\": {\n        \"connector.class\": \"io.confluent.connect.jdbc.JdbcSourceConnector\",\n        \"connection.url\": \"jdbc:mysql://localhost:3306/mydb\",\n        \"connection.user\": \"root\",\n        \"connection.password\": \"test1357\",\n        \"mode\": \"incrementing\",\n        \"incrementing.column.name\": \"id\",\n        \"table.whitelist\":\"users\",\n        \"topic.prefix\":\"my_topic_\",\n        \"tasks.max\":\"1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/connectors/",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "커넥터 삭제",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/connectors/my-sink-connect",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors",
+								"my-sink-connect"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "encrypt",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "sa",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8888/encrypt",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"encrypt"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "msa-user-id",
+			"value": "1a61872c-cfc6-4ea3-ab21-374885670f54"
+		},
+		{
+			"key": "msa-user-id",
+			"value": ""
+		},
+		{
+			"key": "msa-bearer-token",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZTQ2ZDYzZS1mY2JhLTQ1ODEtYWVhNS05NDUyMTkwYjhmZjQiLCJleHAiOjE3MDk4MjA1NjksImlhdCI6MTcwOTczNDE2OX0.scimIIROxrPGr-tVv6CQ-SSsh_N0znc3GJg2jDT8YdTrP0_hktOaXl_FOgSDToRiB5Dxab40jyaEZQwF_ZvL8w"
+		}
+	]
+}
